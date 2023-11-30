@@ -18,7 +18,7 @@ class MultiPeriodDiscriminator(nn.Module):
             in_channels = 1 if l == 0 else 2 ** (5 + l - 1)
             layers.append(WNConv2d(in_channels, 2 ** (5 + l), kernel, stride, padding=(2, 0)))
             layers.append(nn.LeakyReLU(LRELU_SLOPE))
-        layers.append(WNConv2d(1024, 1024, kernel, padding=(2, 0)))
+        layers.append(WNConv2d(256, 1024, kernel, padding=(2, 0)))
         layers.append(nn.LeakyReLU(LRELU_SLOPE))
         layers.append(WNConv2d(1024, 1, (3, 1), padding=(1, 0)))
         self.layers = nn.ModuleList(layers)
@@ -29,8 +29,6 @@ class MultiPeriodDiscriminator(nn.Module):
         feature_maps = []
 
         for layer in self.layers:
-            print(layer)
-            print(x.shape)
             x = layer(x)
             if type(layer) == type(nn.LeakyReLU()):
                 feature_maps.append(x)
