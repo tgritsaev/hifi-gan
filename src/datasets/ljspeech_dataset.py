@@ -32,5 +32,5 @@ class LJSpeechDataset(Dataset):
         # return {"wav": wav, "text": self.texts[idx]}
         if self.max_len:
             start = random.randint(0, max(0, wav.shape[-1] - self.max_len))
-            wav = wav[start : start + self.max_len * DEFAULT_SR]
+            wav = wav[:, start : start + self.max_len * DEFAULT_SR]
         return {"wav": wav}
