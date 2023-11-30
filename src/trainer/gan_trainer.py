@@ -1,4 +1,5 @@
 from tqdm import tqdm
+import pandas as pd
 
 import torch
 
@@ -85,10 +86,15 @@ class GANTrainer(BaseTrainer):
         return batch
 
     @torch.no_grad()
-    def _log_predictions(self, examples_to_log=3, **kwargs):
-        ...
-        # for i, wav in enumerate(wavs):
-        #     self.writer.add_audio(f"audio-{i}", wav, sample_rate=DEFAULT_SR)
+    def _log_predictions(self, pred, target, examples_to_log=3, **kwargs):
+        rows = {}
+        for i, pred, target in enumerate(zip(pred, target))[:examples_to_log]:
+            rows[i] = {
+                "pred": self.writer.wandb.Audio(pred.squeeze().numpy(), sample_rate=DEFAULT_SR),
+                "target": self.writer.wandb.Audio(target.squeeze().numpy(), sample_rate=DEFAULT_SR),
+            }
+
+        self.writer.add_table("logs", pd.DataFrame.from_dict(rows, orient="index"))
 
     def process_batch(self, batch, is_train: bool, metrics: MetricTracker):
         batch = self.move_batch_to_device(batch, self.device)
@@ -139,7 +145,7 @@ class GANTrainer(BaseTrainer):
                 batch = self.process_batch(batch, False, metrics=self.evaluation_metrics)
 
             self.writer.set_step(epoch * self.len_epoch, part)
-            self._log_predictions(False, **batch)
+            self._log_predictions(**batch)
             # self._log_spectrogram(batch["spectrogram"])
             self._log_scalars(self.evaluation_metrics)
 
@@ -180,6 +186,7 @@ class GANTrainer(BaseTrainer):
                 self.writer.add_scalar("disc learning rate", self.disc_lr_scheduler.get_last_lr()[0])
                 self.writer.add_scalar("gen learning rate", self.gen_lr_scheduler.get_last_lr()[0])
                 self._log_scalars(self.train_metrics)
+                self._log_predictions(**batch)
                 # we don't want to reset train metrics at the start of every epoch
                 # because we are interested in recent train metrics
                 last_train_metrics = self.train_metrics.result()
