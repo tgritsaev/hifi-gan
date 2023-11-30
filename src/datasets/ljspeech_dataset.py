@@ -23,7 +23,6 @@ class LJSpeechDataset(Dataset):
         self.wavs_path.sort()
         self.wavs_path = self.wavs_path[:limit]
         self.max_len = max_len
-        print("!!!!!!!!!!!!!!!!!!", self.wavs_path)
 
     def __len__(self):
         return len(self.wavs_path)
@@ -32,7 +31,7 @@ class LJSpeechDataset(Dataset):
         wav, _ = torchaudio.load(self.wavs_path[idx])
         # return {"wav": wav, "text": self.texts[idx]}
         if self.max_len:
-            # start = random.randint(0, max(0, wav.shape[-1] - self.max_len))
-            start = 0
+            # start = 0
+            start = random.randint(0, max(0, wav.shape[-1] - self.max_len))
             wav = wav[:, start : start + self.max_len * DEFAULT_SR]
         return {"wav": wav}

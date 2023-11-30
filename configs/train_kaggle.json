@@ -36,18 +36,6 @@
                     }
                 }
             ]
-        },
-        "val": {
-            "batch_size": 1,
-            "num_workers": 1,
-            "datasets": [
-                {
-                    "type": "LJSpeechDataset",
-                    "args": {
-                        "dir": "test_model/test_data"
-                    }
-                }
-            ]
         }
     },
     "loss": {
@@ -84,16 +72,15 @@
         }
     },
     "trainer": {
-        "epochs": 2000,
+        "epochs": 4000,
         "len_epoch": 50,
         "log_step": 50,
         "save_dir": "saved/",
         "save_period": 200,
         "verbosity": 2,
-        "monitor": "min val_loss",
         "early_stop": 100,
         "visualize": "wandb",
         "wandb_project": "dla4_one_batch",
-        "grad_norm_clip": 10
+        "grad_norm_clip": 1
     }
 }
