@@ -1,14 +1,7 @@
-# Text to speech with FastSpeech2 
+# Mel-spectrogram to wav with HiFi-GAN 
 
 1. The model from the article [HiFi-GAN: Generative Adversarial Networks for Efficient and High Fidelity Speech Synthesis](https://arxiv.org/pdf/2010.05646.pdf) is implemented.
 2. To familiarize with Multi Scale Discriminator [MelGAN: Generative Adversarial Networks for Conditional Waveform Synthesis](https://arxiv.org/pdf/1910.06711.pdf).
-
-## Example
-Inference result is audio, but Github supports only video+audio formats.
-
-https://github.com/tgritsaev/fastspeech2/assets/34184267/80b357d5-6a8f-492d-a550-d8c83645e2f2
-
-You can also download a folder with [tts-results](https://drive.google.com/drive/folders/1U0REGoBFfei30iCxaMrHEaIx0zVPMSIO?usp=share_link) from Google Drive, it includes 27 audios with different length, pitch and energy for the first three inputs from `test_model/input.txt`.
 
 ## Installation guide
 
