@@ -25,7 +25,7 @@ class MultiPeriodDiscriminator(nn.Module):
 
     def forward(self, wav):
         wav = F.pad(wav, (0, self.p - wav.shape[-1] % self.p))
-        x = wav.reshape(wav.shape[0], wav.shape[-1] // self.p, self.p)
+        x = wav.reshape(wav.shape[0], wav.shape[1], wav.shape[-1] // self.p, self.p)
         feature_maps = []
 
         for layer in self.layers:
