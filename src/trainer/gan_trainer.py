@@ -93,7 +93,6 @@ class GANTrainer(BaseTrainer):
     def process_batch(self, batch, is_train: bool, metrics: MetricTracker):
         batch = self.move_batch_to_device(batch, self.device)
         batch.update(self.model(**batch))
-        print(f"{batch['pred'].shape=}")
 
         if is_train:
             print("calc loss")
@@ -105,6 +104,7 @@ class GANTrainer(BaseTrainer):
             self._clip_grad_norm()
             self.disc_optimizer.step()
 
+            batch.update(self.model.forward_disc(**batch))
             # generator
             self.gen_optimizer.zero_grad()
             gen_loss = self.criterion.gen(**batch)
