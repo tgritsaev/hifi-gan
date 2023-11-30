@@ -1,4 +1,5 @@
 # https://arxiv.org/pdf/2010.05646.pdf
+import torch
 from torch import nn
 
 from src.model.base_model import BaseModel
@@ -21,16 +22,15 @@ class HiFiGANModel(BaseModel):
             mpds_out = []
 
             for mpd in self.mpds:
-                print("in mpd ", wav.shape)
                 mpd_out, mpd_feature_map = mpd(wav)
                 feature_maps += mpd_feature_map
-                mpds_out += [mpd_out]
-                print("done")
+
+                mpds_out.append(mpd_out)
 
             msd_out, msd_feature_maps = self.msd(pred)
             feature_maps += msd_feature_maps
 
-            return mpds_out + msd_out, feature_maps
+            return torch.cat([*mpds_out, msd_out]), feature_maps
 
         disc_pred, pred_feature_maps = get_discriminator_output(pred)
         disc_target, target_feature_maps = get_discriminator_output(target)

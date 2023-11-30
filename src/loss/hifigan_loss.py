@@ -26,7 +26,9 @@ class HiFiGANLoss(nn.Module):
 
     def gen(self, pred, target, disc_pred, pred_feature_maps, target_feature_maps, **kwargs):
         loss_adv = ((disc_pred - 1) ** 2).mean()
-        loss_fm = self.lambda_fm * F.l1_loss(target_feature_maps, pred_feature_maps)
         loss_mel = self.lambda_mel * F.l1_loss(wav2mel(pred), target)
+        loss_fm = 0
+        for i in range(len(target_feature_maps)):
+            loss_fm += self.lambda_fm * F.l1_loss(target_feature_maps[i], pred_feature_maps[i])
 
         return {"gen_loss": loss_adv + loss_fm + loss_mel, "loss_adv": loss_adv, "loss_fm": loss_fm, "loss_mel": loss_mel}
