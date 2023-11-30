@@ -73,13 +73,12 @@
         }
     },
     "trainer": {
-        "epochs": 10,
+        "epochs": 1000,
         "len_epoch": 25,
         "log_step": 10,
         "save_dir": "saved/",
         "save_period": 20,
         "verbosity": 2,
-        "monitor": "min val_loss",
         "early_stop": 100,
         "visualize": "wandb",
         "wandb_project": "dla4_one_batch",
