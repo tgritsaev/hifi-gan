@@ -21,9 +21,11 @@ class HiFiGANModel(BaseModel):
             mpds_out = []
 
             for mpd in self.mpds:
+                print("in mpd ", wav.shape)
                 mpd_out, mpd_feature_map = mpd(wav)
                 feature_maps += mpd_feature_map
                 mpds_out += [mpd_out]
+                print("done")
 
             msd_out, msd_feature_maps = self.msd(pred)
             feature_maps += msd_feature_maps
