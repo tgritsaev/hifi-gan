@@ -25,14 +25,12 @@ class HiFiGANModel(BaseModel):
                 mpd_out, mpd_feature_map = mpd(wav)
                 feature_maps += mpd_feature_map
 
-                print(f"{mpd_out.shape=}")
                 mpds_out.append(mpd_out)
 
             msd_out, msd_feature_maps = self.msd(pred)
-            print(f"{msd_out.shape=}")
             feature_maps += msd_feature_maps
 
-            return torch.cat([*mpds_out, msd_out]), feature_maps
+            return mpds_out + [msd_out], feature_maps
 
         disc_pred, pred_feature_maps = get_discriminator_output(pred)
         disc_target, target_feature_maps = get_discriminator_output(target)
