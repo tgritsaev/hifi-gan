@@ -49,7 +49,6 @@ class GANTrainer(BaseTrainer):
         self.evaluation_dataloaders = {k: v for k, v in dataloaders.items() if k != "train"}
 
         self.loss_names = ["disc_loss", "gen_loss", "loss_adv", "loss_fm", "loss_mel"]
-        self.loss_names = ["gen_loss", "loss_mel"]
         self.train_metrics = MetricTracker(*self.loss_names, "grad_norm")
         self.evaluation_metrics = MetricTracker(*self.loss_names)
 
@@ -113,10 +112,8 @@ class GANTrainer(BaseTrainer):
             disc_loss = self.criterion.disc(**batch)
             batch.update(disc_loss)
             batch["disc_loss"].backward()
-            torch.nn.utils.clip_grad_norm_(self.model.mpds.parameters(), self.config["trainer"]["grad_norm_clip"])
-            torch.nn.utils.clip_grad_norm_(self.model.msd.parameters(), self.config["trainer"]["grad_norm_clip"])
-            # self._clip_grad_norm(self.model.mpds)
-            # self._clip_grad_norm(self.model.msd)
+            self._clip_grad_norm(self.model.mpds)
+            self._clip_grad_norm(self.model.msd)
             self.disc_optimizer.step()
 
             # generator
@@ -125,8 +122,7 @@ class GANTrainer(BaseTrainer):
             gen_loss = self.criterion.gen(**batch)
             batch.update(gen_loss)
             batch["gen_loss"].backward()
-            torch.nn.utils.clip_grad_norm_(self.model.gen.parameters(), self.config["trainer"]["grad_norm_clip"])
-            # self._clip_grad_norm(self.model.gen)
+            self._clip_grad_norm(self.model.gen)
             self.gen_optimizer.step()
 
             self.train_metrics.update("grad_norm", self.get_grad_norm())

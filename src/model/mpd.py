@@ -14,11 +14,15 @@ class MultiPeriodDiscriminator(nn.Module):
         layers = []
         kernel = (5, 1)
         stride = (3, 1)
+        channels = [32, 64, 128, 512]
         for l in range(4):
-            in_channels = 1 if l == 0 else 2 ** (5 + l - 1)
-            layers.append(WNConv2d(in_channels, 2 ** (5 + l), kernel, stride, padding=(2, 0)))
+            # in_channels = 1 if l == 0 else 2 ** (5 + l - 1)
+            # layers.append(WNConv2d(in_channels, 2 ** (5 + l), kernel, stride, padding=(2, 0)))
+            in_channels = 1 if l == 0 else channels[l - 1]
+            layers.append(WNConv2d(in_channels, channels[l], kernel, stride, padding=(2, 0)))
             layers.append(nn.LeakyReLU(LRELU_SLOPE))
-        layers.append(WNConv2d(256, 1024, kernel, padding=(2, 0)))
+        # layers.append(WNConv2d(256, 1024, kernel, padding=(2, 0)))
+        layers.append(WNConv2d(512, 1024, kernel, padding=(2, 0)))
         layers.append(nn.LeakyReLU(LRELU_SLOPE))
         layers.append(WNConv2d(1024, 1, (3, 1), padding=(1, 0)))
         self.layers = nn.ModuleList(layers)
