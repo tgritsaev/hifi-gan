@@ -49,7 +49,7 @@ class GANTrainer(BaseTrainer):
 
         self.loss_names = ["disc_loss", "gen_loss", "loss_adv", "loss_fm", "loss_mel"]
         self.train_metrics = MetricTracker(*self.loss_names, "grad_norm")
-        self.test_metrics = MetricTracker(*self.loss_names)
+        self.evaluation_metrics = MetricTracker(*self.loss_names)
 
     def _save_checkpoint(self, epoch, save_best=False, only_best=False):
         """
