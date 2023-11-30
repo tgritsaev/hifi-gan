@@ -99,8 +99,7 @@ class GANTrainer(BaseTrainer):
             print("calc loss")
             # discriminator
             self.disc_optimizer.zero_grad()
-            batch["pred"] = batch["pred"].detach()
-            batch.update(self.model.disc_forward(**batch))
+            batch.update(self.model.disc_forward(batch["pred"].detach(), batch["target"]))
             disc_loss = self.criterion.disc(**batch)
             batch.update(disc_loss)
             batch["disc_loss"].backward()
