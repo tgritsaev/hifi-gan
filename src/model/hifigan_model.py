@@ -46,6 +46,7 @@ class HiFiGANModel(BaseModel):
         pred = self.gen(mel)
         out = {"pred": pred}
 
+        print("in forward:", mel.shape, target.shape)
         if self.training:
             out.update(self.disc_forward(pred, target))
 
