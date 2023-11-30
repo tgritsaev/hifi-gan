@@ -25,14 +25,15 @@
     },
     "data": {
         "train": {
-            "batch_size": 6,
+            "batch_size": 8,
             "num_workers": 1,
             "datasets": [
                 {
                     "type": "LJSpeechDataset",
                     "args": {
                         "dir": "/kaggle/input/ljspeech/LJSpeech-1.1",
-                        "limit": 6
+                        "limit": 16,
+                        "max_len": 1
                     }
                 }
             ]
