@@ -19,9 +19,10 @@ class ResidualBlock(nn.Module):
         self.layers = nn.ModuleList(layers)
 
     def forward(self, x):
+        print(f"begin ResidualBlock: {x.shape}")
         for block in self.layers:
-            print("...")
             x = x + block(x)
+        print(f"end ResidualBlock: {x.shape}")
         return x
 
 
@@ -34,9 +35,7 @@ class MultiReceptiveFieldFusion(nn.Module):
     def forward(self, x):
         sum_x = 0
         for resblock in self.resblocks:
-            print("begin")
             sum_x += resblock(x)
-            print("end")
         return sum_x / len(self.resblocks)
 
 
