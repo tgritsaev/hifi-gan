@@ -27,12 +27,12 @@ class HiFiGANLoss(nn.Module):
             disc_loss += ((dt - 1) ** 2 + dp**2).mean()
         return {"disc_loss": disc_loss}
 
-    def gen(self, pred, target, disc_pred, pred_feature_maps, target_feature_maps, **kwargs):
+    def gen(self, mel, pred, disc_pred, pred_feature_maps, target_feature_maps, **kwargs):
         loss_adv = 0
         for dp in disc_pred:
             loss_adv += ((dp - 1) ** 2).mean()
 
-        loss_mel = self.lambda_mel * F.l1_loss(self.wav2mel(pred), target)
+        loss_mel = self.lambda_mel * F.l1_loss(self.wav2mel(pred), mel)
 
         loss_fm = 0
         for tfm, pfm in zip(target_feature_maps, pred_feature_maps):
