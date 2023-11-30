@@ -94,22 +94,21 @@ class GANTrainer(BaseTrainer):
         batch = self.move_batch_to_device(batch, self.device)
         out = self.model(**batch)
         batch.update(out)
-        print(out.keys(), batch.keys())
 
         if is_train:
             print("calc loss")
-            print(batch.keys())
-            # discrimanor
+            # discriminator
             self.disc_optimizer.zero_grad()
+            batch["pred"].detach()
+            batch.update(self.model.disc_forward(**batch))
             disc_loss = self.criterion.disc(**batch)
             batch.update(disc_loss)
             batch["disc_loss"].backward()
             self._clip_grad_norm()
             self.disc_optimizer.step()
 
-            batch["pred"].detach()
-            batch.update(self.model.disc_forward(**batch))
             # generator
+            batch.update(self.model.disc_forward(**batch))
             self.gen_optimizer.zero_grad()
             gen_loss = self.criterion.gen(**batch)
             batch.update(gen_loss)
