@@ -40,7 +40,7 @@ class HiFiGANModel(BaseModel):
             "target_feature_maps": target_feature_maps,
         }
 
-    def forward(self, mel, pred, target, **kwargs):
+    def forward(self, mel, target=None, **kwargs):
         pred = self.gen(mel)
         out = {"pred": pred}
 
