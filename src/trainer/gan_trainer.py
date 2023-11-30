@@ -96,6 +96,7 @@ class GANTrainer(BaseTrainer):
         batch.update(gen_outputs)
 
         if is_train:
+            print("calc loss")
             # discrimanor
             self.disc_optimizer.zero_grad()
             disc_loss = self.criterion.disc(**batch)
