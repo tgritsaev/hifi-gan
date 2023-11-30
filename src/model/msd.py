@@ -39,7 +39,7 @@ class MultiScaleDiscriminator(nn.Module):
         blocks.append(DiscriminatorBlock(channels_list, kernels, strides, groups_list, False))
         blocks += [DiscriminatorBlock(channels_list, kernels, strides, groups_list) for _ in range(2)]
         self.discriminator_blocks = nn.ModuleList(blocks)
-        self.downsamples = [nn.AvgPool1d(4, 2, 2), nn.AvgPool1d(4, 2, 2)]
+        self.downsamples = nn.ModuleList([nn.AvgPool1d(4, 2, 2), nn.AvgPool1d(4, 2, 2)])
 
     def forward(self, wav):
         feature_maps = []
