@@ -1,6 +1,7 @@
 # https://arxiv.org/pdf/2010.05646.pdf, 2 HiFi-GAN, Appendix A
 from torch import nn
 
+from src.model.utils import WNConv1d
 from src.utils.mel_spectrogram import MelSpectrogramConfig
 from src.utils import LRELU_SLOPE
 
@@ -58,7 +59,7 @@ class Generator(nn.Module):
             )
             layers.append(MultiReceptiveFieldFusion(channels, k_r, D_r))
         layers.append(nn.LeakyReLU())
-        layers.append(nn.Conv1d(h_u // (2 ** len(k_u)), 1, kernel, padding="same"))
+        layers.append(WNConv1d(h_u // (2 ** len(k_u)), 1, kernel, padding="same"))
         layers.append(nn.Tanh())
         self.layers = nn.Sequential(*layers)
 
