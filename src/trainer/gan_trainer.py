@@ -107,7 +107,9 @@ class GANTrainer(BaseTrainer):
             self._clip_grad_norm()
             self.disc_optimizer.step()
 
+            print("!!!", batch["disc_pred"][0][0])
             batch.update(self.model.disc_forward(**batch))
+            print("???", batch["disc_pred"][0][0])
             # generator
             self.gen_optimizer.zero_grad()
             gen_loss = self.criterion.gen(**batch)
