@@ -18,7 +18,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 SEED = 123
 torch.manual_seed(SEED)
 torch.backends.cudnn.deterministic = False
-torch.backends.cudnn.benchmark = False
+torch.backends.cudnn.benchmark = True
 np.random.seed(SEED)
 
 
