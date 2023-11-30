@@ -29,6 +29,7 @@ class MultiPeriodDiscriminator(nn.Module):
         feature_maps = []
 
         for layer in self.layers:
+            print(layer)
             print(x.shape)
             x = layer(x)
             if type(layer) == type(nn.LeakyReLU()):
