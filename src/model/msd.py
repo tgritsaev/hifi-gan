@@ -48,5 +48,5 @@ class MultiScaleDiscriminator(nn.Module):
             x, disc_feature_maps = disc(x)
             feature_maps += disc_feature_maps
             if i + 1 < len(self.discriminator_blocks):
-                x = self.downsample[i](x)
+                x = self.downsamples[i](x)
         return x, feature_maps
