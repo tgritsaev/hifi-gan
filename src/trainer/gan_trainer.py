@@ -49,7 +49,7 @@ class GANTrainer(BaseTrainer):
         self.evaluation_dataloaders = {k: v for k, v in dataloaders.items() if k != "train"}
 
         self.loss_names = ["disc_loss", "gen_loss", "loss_adv", "loss_fm", "loss_mel"]
-        self.loss_names = ["disc_loss", "gen_loss", "loss_mel"]
+        self.loss_names = ["gen_loss", "loss_mel"]
         self.train_metrics = MetricTracker(*self.loss_names, "grad_norm")
         self.evaluation_metrics = MetricTracker(*self.loss_names)
 
