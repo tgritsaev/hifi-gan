@@ -26,4 +26,5 @@ class LJSpeechDataset(Dataset):
 
     def __getitem__(self, idx):
         wav, _ = torchaudio.load(self.wavs_path[idx])
-        return {"wav": wav, "text": self.texts[idx]}
+        # return {"wav": wav, "text": self.texts[idx]}
+        return {"wav": wav}
