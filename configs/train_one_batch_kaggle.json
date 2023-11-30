@@ -32,7 +32,7 @@
                     "type": "LJSpeechDataset",
                     "args": {
                         "dir": "/kaggle/input/ljspeech/LJSpeech-1.1",
-                        "limit": 16,
+                        "limit": 8,
                         "max_len": 1
                     }
                 }
