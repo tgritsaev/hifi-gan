@@ -32,7 +32,7 @@ class HiFiGANLoss(nn.Module):
         # for dp in disc_pred:
         #     loss_adv += ((dp - 1) ** 2).mean()
 
-        loss_mel = self.lambda_mel * F.l1_loss(self.wav2mel(pred), mel)
+        loss_mel = self.lambda_mel * F.l1_loss(self.wav2mel(pred), mel.detach())
 
         loss_fm = 0
         # for tfm, pfm in zip(target_feature_maps, pred_feature_maps):
