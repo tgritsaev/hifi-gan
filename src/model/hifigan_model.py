@@ -18,19 +18,19 @@ class HiFiGANModel(BaseModel):
 
     def disc_forward(self, pred, target, **kwargs):
         def get_discriminator_output(wav):
+            out = []
             feature_maps = []
-            mpds_out = []
 
             for mpd in self.mpds:
                 mpd_out, mpd_feature_map = mpd(wav)
+                out.append(mpd_out)
                 feature_maps += mpd_feature_map
 
-                mpds_out.append(mpd_out)
-
             msd_out, msd_feature_maps = self.msd(pred)
+            out.append(msd_out)
             feature_maps += msd_feature_maps
 
-            return mpds_out + [msd_out], feature_maps
+            return out, feature_maps
 
         disc_pred, pred_feature_maps = get_discriminator_output(pred)
         disc_target, target_feature_maps = get_discriminator_output(target)
