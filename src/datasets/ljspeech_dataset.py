@@ -31,6 +31,7 @@ class LJSpeechDataset(Dataset):
         wav, _ = torchaudio.load(self.wavs_path[idx])
         # return {"wav": wav, "text": self.texts[idx]}
         if self.max_len:
-            start = random.randint(0, max(0, wav.shape[-1] - self.max_len))
+            # start = random.randint(0, max(0, wav.shape[-1] - self.max_len))
+            start = 0
             wav = wav[:, start : start + self.max_len * DEFAULT_SR]
         return {"wav": wav}
