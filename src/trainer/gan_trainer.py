@@ -185,8 +185,8 @@ class GANTrainer(BaseTrainer):
             if batch_idx % self.log_step == 0:
                 self.writer.set_step((epoch - 1) * self.len_epoch + batch_idx)
                 self.logger.debug(
-                    "Train Epoch: {} {} Gen loss: {:.6f} Disc loss: {:.6f}".format(
-                        epoch, self._progress(batch_idx), batch["gen_loss"].item(), batch["disc_loss"].item()
+                    "Train Epoch: {} {} Gen loss: {:.6f} Disc loss: {:.6f} Mel loss: {:.6f}".format(
+                        epoch, self._progress(batch_idx), batch["gen_loss"].item(), batch["disc_loss"].item(), batch["mel_loss"].item()
                     )
                 )
                 self.writer.add_scalar("disc learning rate", self.disc_lr_scheduler.get_last_lr()[0])
