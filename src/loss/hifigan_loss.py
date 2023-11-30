@@ -1,8 +1,7 @@
 from torch import nn
 import torch.nn.functional as F
 
-from src.utils.mel_spectrogram import MelSpectrogram
-from src.utils.mel_spectrogram import wav2mel
+from src.utils.mel_spectrogram import MelSpectrogram, MelSpectrogramConfig
 
 
 class HiFiGANLoss(nn.Module):
@@ -11,6 +10,7 @@ class HiFiGANLoss(nn.Module):
 
         self.lambda_fm = lambda_fm
         self.lambda_mel = lambda_mel
+        self.wav2mel = MelSpectrogram(MelSpectrogramConfig)
 
     # def forward(self, pred, target, disc_pred, disc_target, pred_feature_maps, target_feature_maps, **kwargs):
     #     loss_gen_adv = ((disc_target - 1) ** 2 + disc_pred**2).mean()
@@ -32,7 +32,7 @@ class HiFiGANLoss(nn.Module):
         for dp in disc_pred:
             loss_adv += ((dp - 1) ** 2).mean()
 
-        loss_mel = self.lambda_mel * F.l1_loss(wav2mel(pred), target)
+        loss_mel = self.lambda_mel * F.l1_loss(self.wav2mel(pred), target)
 
         loss_fm = 0
         for tfm, pfm in zip(target_feature_maps, pred_feature_maps):
