@@ -20,6 +20,7 @@ class ResidualBlock(nn.Module):
 
     def forward(self, x):
         for block in self.layers:
+            print("...")
             x = x + block(x)
         return x
 
@@ -63,4 +64,5 @@ class Generator(nn.Module):
         self.layers = nn.Sequential(*layers)
 
     def forward(self, mel):
+        print(f"{mel.shape=}")
         return self.layers(mel)
