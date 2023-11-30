@@ -28,6 +28,7 @@ class MultiPeriodDiscriminator(nn.Module):
         x = wav.reshape(wav.shape[0], wav.shape[1], wav.shape[-1] // self.p, self.p)
         feature_maps = []
 
+        print(x.shape)
         for layer in self.layers:
             x = layer(x)
             if type(layer) == type(nn.LeakyReLU()):
