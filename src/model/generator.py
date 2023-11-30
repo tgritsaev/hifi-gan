@@ -19,7 +19,9 @@ class ResidualBlock(nn.Module):
         self.layers = nn.ModuleList(layers)
 
     def forward(self, x):
+        print("in multi receptive")
         for block in self.layers:
+            print("...")
             x = x + block(x)
         return x
 
@@ -31,6 +33,7 @@ class MultiReceptiveFieldFusion(nn.Module):
         self.resblocks = nn.ModuleList([ResidualBlock(channels, k_r[n], D_r[n]) for n in range(len(k_r))])
 
     def forward(self, x):
+        print("in multi receptive")
         sum_x = 0
         for resblock in self.resblocks:
             sum_x += resblock(x)
