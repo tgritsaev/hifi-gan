@@ -49,4 +49,4 @@ class HiFiGANModel(BaseModel):
         if self.training:
             out.update(self.disc_forward(pred, target))
 
-        return {"pred": pred}
+        return out
