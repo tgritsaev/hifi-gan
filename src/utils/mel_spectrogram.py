@@ -38,7 +38,7 @@ class MelSpectrogram(nn.Module):
             f_min=config.f_min,
             f_max=config.f_max,
             n_mels=config.n_mels,
-            pad=(config["win_length"] - config["hop_length"]) // 2,
+            pad=(config.win_length - config.hop_length) // 2,
             center=False,
         )
 
