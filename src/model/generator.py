@@ -60,7 +60,7 @@ class Generator(nn.Module):
             )
             layers.append(MultiReceptiveFieldFusion(channels, k_r, D_r))
         layers.append(nn.LeakyReLU())
-        layers.append(nn.Conv1d(2, 1, kernel, padding="same"))
+        layers.append(nn.Conv1d(h_u // (2 ** len(k_u)), 1, kernel, padding="same"))
         layers.append(nn.Tanh())
         self.layers = nn.Sequential(*layers)
 
