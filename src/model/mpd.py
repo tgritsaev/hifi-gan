@@ -1,0 +1,30 @@
+# https://arxiv.org/pdf/2010.05646.pdf, 2 HiFi-GAN, Appendix A
+from torch import nn
+import torch.nn.functional as F
+
+from src.model.utils import WNConv2d
+from src.utils import LRELU_SLOPE
+
+
+class MultiPeriodDiscriminator(nn.Module):
+    def __init__(self, p):
+        super().__init__()
+
+        self.p = p
+        layers = []
+        kernel = (5, 1)
+        stride = (3, 1)
+        for l in range(4):
+            in_channels = 1 if l == 0 else 2 ** (5 + l - 1)
+            layers.append(WNConv2d(in_channels, 2 ** (5 + l), kernel, stride, padding=(2, 0)))
+            layers.append(nn.LeakyReLU(LRELU_SLOPE))
+        layers.append(WNConv2d(1024, 1024, kernel, padding="same"))
+        layers.append(nn.LeakyReLU(LRELU_SLOPE))
+        layers.append(WNConv2d(1024, 1, kernel, padding="same"))
+        self.layers = nn.Sequential(*layers)
+
+    def forward(self, wav):
+        wav = F.pad(wav, (0, self.p - wav.shape[-1] % self.p))
+        wav2d = wav.reshape(wav.shape[0], wav.shape[-1] // self.p, self.p)
+
+        return self.layers(wav2d.unsqueeze(1))
