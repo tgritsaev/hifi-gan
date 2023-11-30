@@ -23,19 +23,19 @@ class HiFiGANLoss(nn.Module):
 
     def disc(self, disc_pred, disc_target, **kwargs):
         disc_loss = 0
-        # for dt, dp in zip(disc_target, disc_pred):
-        #     disc_loss += ((dt - 1) ** 2 + dp**2).mean()
+        for dt, dp in zip(disc_target, disc_pred):
+            disc_loss += ((dt - 1) ** 2).mean() + (dp**2).mean()
         return {"disc_loss": disc_loss}
 
     def gen(self, mel, pred, disc_pred, pred_feature_maps, target_feature_maps, **kwargs):
         loss_adv = 0
-        # for dp in disc_pred:
-        #     loss_adv += ((dp - 1) ** 2).mean()
+        for dp in disc_pred:
+            loss_adv += ((dp - 1) ** 2).mean()
 
         loss_mel = self.lambda_mel * F.l1_loss(self.wav2mel(pred), mel)
 
         loss_fm = 0
-        # for tfm, pfm in zip(target_feature_maps, pred_feature_maps):
-        #     loss_fm += self.lambda_fm * F.l1_loss(tfm, pfm)
+        for tfm, pfm in zip(target_feature_maps, pred_feature_maps):
+            loss_fm += self.lambda_fm * F.l1_loss(tfm, pfm)
 
         return {"gen_loss": loss_adv + loss_fm + loss_mel, "loss_adv": loss_adv, "loss_fm": loss_fm, "loss_mel": loss_mel}

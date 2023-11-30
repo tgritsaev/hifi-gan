@@ -112,10 +112,10 @@ class GANTrainer(BaseTrainer):
             batch.update(self.model.disc_forward(batch["pred"].detach(), batch["target"]))
             disc_loss = self.criterion.disc(**batch)
             batch.update(disc_loss)
-            # batch["disc_loss"].backward()
+            batch["disc_loss"].backward()
             self._clip_grad_norm(self.model.mpds)
             self._clip_grad_norm(self.model.msd)
-            # self.disc_optimizer.step()
+            self.disc_optimizer.step()
 
             # generator
             batch.update(self.model.disc_forward(**batch))
