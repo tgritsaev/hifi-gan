@@ -29,10 +29,9 @@ class MultiPeriodDiscriminator(nn.Module):
         feature_maps = []
 
         for layer in self.layers:
-            print(x.shape)
             x = layer(x)
             if type(layer) == type(nn.LeakyReLU()):
                 feature_maps.append(x)
 
         feature_maps.append(x)
-        return self.layers(x.unsqueeze(1)), feature_maps
+        return x, feature_maps
