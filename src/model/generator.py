@@ -15,7 +15,7 @@ class ResidualBlock(nn.Module):
             block = []
             for l in range(len(D_rn[m])):
                 block.append(nn.LeakyReLU(LRELU_SLOPE))
-                block.append(nn.Conv1d(channels, channels, k_rn, padding="same", dilation=D_rn[m][l]))
+                block.append(WNConv1d(channels, channels, k_rn, padding="same", dilation=D_rn[m][l]))
             layers.append(nn.Sequential(*block))
         self.layers = nn.ModuleList(layers)
 
