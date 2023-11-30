@@ -60,32 +60,32 @@
     "gen_optimizer": {
         "type": "Adam",
         "args": {
-            "lr": 2e-4,
+            "lr": 1e-4,
             "betas": [0.8, 0.99]
         }
     },
     "gen_lr_scheduler": {
         "type": "ExponentialLR",
         "args": {
-            "gamma": 0.999
+            "gamma": 0.99
         }
     },
     "disc_optimizer": {
         "type": "Adam",
         "args": {
-            "lr": 2e-4,
+            "lr": 1e-4,
             "betas": [0.8, 0.99]
         }
     },
     "disc_lr_scheduler": {
         "type": "ExponentialLR",
         "args": {
-            "gamma": 0.999
+            "gamma": 0.99
         }
     },
     "trainer": {
-        "epochs": 20,
-        "len_epoch": 50,
+        "epochs": 40,
+        "len_epoch": 25,
         "log_step": 100,
         "save_dir": "saved/",
         "save_period": 1,
