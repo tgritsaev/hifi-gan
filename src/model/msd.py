@@ -24,7 +24,7 @@ class DiscriminatorBlock(nn.Module):
         feature_maps = []
         for layer in self.layers:
             x = layer(x)
-            if type(layer) == type(nn.LeakyReLU(LRELU_SLOPE)):
+            if type(layer) == type(nn.LeakyReLU()):
                 feature_maps.append(x)
 
         feature_maps.append(x)

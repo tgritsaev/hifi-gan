@@ -20,11 +20,18 @@ class MultiPeriodDiscriminator(nn.Module):
             layers.append(nn.LeakyReLU(LRELU_SLOPE))
         layers.append(WNConv2d(1024, 1024, kernel, padding="same"))
         layers.append(nn.LeakyReLU(LRELU_SLOPE))
-        layers.append(WNConv2d(1024, 1, kernel, padding="same"))
-        self.layers = nn.Sequential(*layers)
+        layers.append(WNConv2d(1024, 1, (3, 1), padding="same"))
+        self.layers = nn.ModuleList(layers)
 
     def forward(self, wav):
         wav = F.pad(wav, (0, self.p - wav.shape[-1] % self.p))
-        wav2d = wav.reshape(wav.shape[0], wav.shape[-1] // self.p, self.p)
+        x = wav.reshape(wav.shape[0], wav.shape[-1] // self.p, self.p)
+        feature_maps = []
 
-        return self.layers(wav2d.unsqueeze(1))
+        for layer in self.layers:
+            x = layer(x)
+            if type(layer) == type(nn.LeakyReLU()):
+                feature_maps.append(x)
+
+        feature_maps.append(x)
+        return self.layers(x.unsqueeze(1)), feature_maps
