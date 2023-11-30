@@ -96,7 +96,6 @@ class GANTrainer(BaseTrainer):
         batch.update(out)
 
         if is_train:
-            print("calc loss")
             # discriminator
             self.disc_optimizer.zero_grad()
             batch.update(self.model.disc_forward(batch["pred"].detach(), batch["target"]))
