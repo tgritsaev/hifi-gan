@@ -55,7 +55,7 @@ def main(config):
     gen_lr_scheduler = config.init_obj(config["gen_lr_scheduler"], torch.optim.lr_scheduler, gen_optimizer)
     logger.info(f"Generator params count: {get_params_count(model.gen)}")
 
-    disc_trainable_params = filter(lambda p: p.requires_grad, itertools.chain(model.msd.parameters(), model.mpds.parameters()))
+    disc_trainable_params = list(model.msd.parameters()) + list(model.mpds.parameters())
     disc_optimizer = config.init_obj(config["disc_optimizer"], torch.optim, disc_trainable_params)
     disc_lr_scheduler = config.init_obj(config["disc_lr_scheduler"], torch.optim.lr_scheduler, disc_optimizer)
     logger.info(f"MPDs params count: {get_params_count(model.mpds)}")
