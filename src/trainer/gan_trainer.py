@@ -93,7 +93,7 @@ class GANTrainer(BaseTrainer):
     def process_batch(self, batch, is_train: bool, metrics: MetricTracker):
         batch = self.move_batch_to_device(batch, self.device)
         batch.update(self.model(**batch))
-        print(batch["pred"].shape)
+        print(f"{batch['pred'].shape=}")
 
         if is_train:
             print("calc loss")

@@ -15,30 +15,58 @@ class HiFiGANModel(BaseModel):
         self.mpds = nn.ModuleList([MultiPeriodDiscriminator(p) for p in mpd_periods])
         self.msd = MultiScaleDiscriminator(**msd_args)
 
-    def forward(self, mel, **kwargs):
-        return {"pred": self.gen(mel)}
+    def forward(self, mel, pred, target, **kwargs):
+        pred = self.gen(mel)
 
-    def disc_forward(self, pred, target, **kwargs):
-        def get_discriminator_output(wav):
-            feature_maps = []
-            mpds_out = []
+        if self.training:
 
-            for mpd in self.mpds:
-                mpd_out, mpd_feature_map = mpd(wav)
-                feature_maps += mpd_feature_map
-                mpds_out += [mpd_out]
+            def get_discriminator_output(wav):
+                feature_maps = []
+                mpds_out = []
 
-            msd_out, msd_feature_maps = self.msd(pred)
-            feature_maps += msd_feature_maps
+                for mpd in self.mpds:
+                    mpd_out, mpd_feature_map = mpd(wav)
+                    feature_maps += mpd_feature_map
+                    mpds_out += [mpd_out]
 
-            return mpds_out + msd_out, feature_maps
+                msd_out, msd_feature_maps = self.msd(pred)
+                feature_maps += msd_feature_maps
 
-        disc_pred, pred_feature_maps = get_discriminator_output(pred)
-        disc_target, target_feature_maps = get_discriminator_output(target)
+                return mpds_out + msd_out, feature_maps
 
-        return {
-            "disc_pred": disc_pred,
-            "pred_feature_maps": pred_feature_maps,
-            "disc_target": disc_target,
-            "target_feature_maps": target_feature_maps,
-        }
+            disc_pred, pred_feature_maps = get_discriminator_output(pred)
+            disc_target, target_feature_maps = get_discriminator_output(target)
+
+            return {
+                "pred": pred,
+                "disc_pred": disc_pred,
+                "pred_feature_maps": pred_feature_maps,
+                "disc_target": disc_target,
+                "target_feature_maps": target_feature_maps,
+            }
+        return {"pred": pred}
+
+    # def disc_forward(self, pred, target, **kwargs):
+    #     def get_discriminator_output(wav):
+    #         feature_maps = []
+    #         mpds_out = []
+
+    #         for mpd in self.mpds:
+    #             mpd_out, mpd_feature_map = mpd(wav)
+    #             feature_maps += mpd_feature_map
+    #             mpds_out += [mpd_out]
+
+    #         msd_out, msd_feature_maps = self.msd(pred)
+    #         feature_maps += msd_feature_maps
+
+    #         return mpds_out + msd_out, feature_maps
+
+    #     disc_pred, pred_feature_maps = get_discriminator_output(pred)
+    #     disc_target, target_feature_maps = get_discriminator_output(target)
+
+    #     return {
+    #         "disc_pred": disc_pred,
+    #         "pred_feature_maps": pred_feature_maps,
+    #         "disc_target": disc_target,
+    #         "target_feature_maps": target_feature_maps,
+    #     }
