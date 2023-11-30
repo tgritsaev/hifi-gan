@@ -23,6 +23,7 @@ class LJSpeechDataset(Dataset):
         self.wavs_path.sort()
         self.wavs_path = self.wavs_path[:limit]
         self.max_len = max_len
+        print("!!!!!!!!!!!!!!!!!!", self.wavs_path)
 
     def __len__(self):
         return len(self.wavs_path)

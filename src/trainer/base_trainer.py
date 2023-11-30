@@ -79,9 +79,9 @@ class BaseTrainer:
         for metric_name in metric_tracker.keys():
             self.writer.add_scalar(f"{metric_name}", metric_tracker.avg(metric_name))
 
-    def _clip_grad_norm(self, obj):
+    def _clip_grad_norm(self):
         if self.config["trainer"].get("grad_norm_clip", None) is not None:
-            torch.nn.utils.clip_grad_norm_(obj.parameters(), self.config["trainer"]["grad_norm_clip"])
+            torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.config["trainer"]["grad_norm_clip"])
 
     def _progress(self, batch_idx):
         base = "[{}/{} ({:.0f}%)]"

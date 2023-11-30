@@ -34,8 +34,8 @@ class MultiReceptiveFieldFusion(nn.Module):
     def forward(self, x):
         sum_x = 0
         for resblock in self.resblocks:
-            sum_x += resblock(x)
-        return sum_x / len(self.resblocks)
+            sum_x += resblock(x) / len(self.resblocks)
+        return sum_x
 
 
 class Generator(nn.Module):
