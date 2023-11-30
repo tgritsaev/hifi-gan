@@ -93,8 +93,8 @@ class GANTrainer(BaseTrainer):
             if i >= examples_to_log:
                 break
             rows[i] = {
-                "pred": self.writer.wandb.Audio(pred.squeeze().numpy(), sample_rate=DEFAULT_SR),
-                "target": self.writer.wandb.Audio(target.squeeze().numpy(), sample_rate=DEFAULT_SR),
+                "pred": self.writer.wandb.Audio(pred.cpu().squeeze().numpy(), sample_rate=DEFAULT_SR),
+                "target": self.writer.wandb.Audio(target.cpu().squeeze().numpy(), sample_rate=DEFAULT_SR),
             }
             i += 1
 
