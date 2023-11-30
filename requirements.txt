@@ -16,5 +16,3 @@ Unidecode
 inflect
 nltk
 hparams
-TextGrid
-pyworld

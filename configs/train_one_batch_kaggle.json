@@ -31,7 +31,7 @@
                 {
                     "type": "LJSpeechDataset",
                     "args": {
-                        "dir": "data"
+                        "dir": "/kaggle/input/ljspeech/LJSpeech-1.1"
                     }
                 }
             ]
@@ -83,8 +83,8 @@
         }
     },
     "trainer": {
-        "epochs": 8,
-        "len_epoch": 10000,
+        "epochs": 20,
+        "len_epoch": 50,
         "log_step": 100,
         "save_dir": "saved/",
         "save_period": 1,
@@ -92,7 +92,7 @@
         "monitor": "min val_loss",
         "early_stop": 100,
         "visualize": "wandb",
-        "wandb_project": "dla3_text_to_speech",
+        "wandb_project": "dla4_one_batch",
         "grad_norm_clip": 5
     }
 }
