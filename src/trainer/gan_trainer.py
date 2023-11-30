@@ -95,6 +95,7 @@ class GANTrainer(BaseTrainer):
         batch.update(self.model(**batch))
 
         if is_train:
+            print(batch["pred"].shape)
             print("calc loss")
             # discrimanor
             self.disc_optimizer.zero_grad()
