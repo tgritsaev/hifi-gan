@@ -1,5 +1,6 @@
 from typing import List
 import torch
+import torch.nn.functional as F
 from src.utils.mel_spectrogram import MelSpectrogram, MelSpectrogramConfig
 
 wav2mel = MelSpectrogram(MelSpectrogramConfig())
