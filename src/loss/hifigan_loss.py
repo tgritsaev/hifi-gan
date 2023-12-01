@@ -34,6 +34,8 @@ class HiFiGANLoss(nn.Module):
             loss_adv += torch.mean((dp - 1) ** 2)
 
         loss_mel = self.lambda_mel * F.l1_loss(self.wav2mel(pred), mel)
+        print(self.wav2mel(pred).shape, mel.shape)
+        assert self.wav2mel(pred).shape == mel.shape
 
         loss_fm = 0
         for tfm, pfm in zip(target_feature_maps, pred_feature_maps):
