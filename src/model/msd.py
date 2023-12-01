@@ -47,7 +47,7 @@ class MultiScaleDiscriminator(nn.Module):
         x = wav
         for i, disc in enumerate(self.discriminator_blocks):
             x, disc_feature_maps = disc(x)
-            feature_maps += disc_feature_maps
+            feature_maps.extend(disc_feature_maps)
             if i + 1 < len(self.discriminator_blocks):
                 x = self.downsamples[i](x)
         x = torch.flatten(x, 1, -1)

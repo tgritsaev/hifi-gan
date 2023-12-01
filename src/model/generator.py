@@ -32,9 +32,12 @@ class MultiReceptiveFieldFusion(nn.Module):
         self.resblocks = nn.ModuleList([ResidualBlock(channels, k_r[n], D_r[n]) for n in range(len(k_r))])
 
     def forward(self, x):
-        sum_x = 0
+        sum_x = None
         for resblock in self.resblocks:
-            sum_x += resblock(x) / len(self.resblocks)
+            if sum_x is None:
+                sum_x = resblock(x) / len(self.resblocks)
+            else:
+                sum_x = sum_x + (resblock(x) / len(self.resblocks))
         return sum_x
 
 
