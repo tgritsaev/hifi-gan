@@ -48,27 +48,27 @@
     "gen_optimizer": {
         "type": "Adam",
         "args": {
-            "lr": 2e-4,
+            "lr": 2e-3,
             "betas": [0.8, 0.99]
         }
     },
     "gen_lr_scheduler": {
         "type": "ExponentialLR",
         "args": {
-            "gamma": 0.999
+            "gamma": 0.992
         }
     },
     "disc_optimizer": {
         "type": "Adam",
         "args": {
-            "lr": 2e-4,
+            "lr": 2e-3,
             "betas": [0.8, 0.99]
         }
     },
     "disc_lr_scheduler": {
         "type": "ExponentialLR",
         "args": {
-            "gamma": 0.999
+            "gamma": 0.992
         }
     },
     "trainer": {
