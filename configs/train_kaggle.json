@@ -46,9 +46,10 @@
         }
     },
     "gen_optimizer": {
-        "type": "Adam",
+        "type": "AdamW",
         "args": {
-            "lr": 2e-5,
+            "lr": 2e-4,
+            "weight_decay": 1e-6,
             "betas": [0.8, 0.99]
         }
     },
@@ -59,9 +60,10 @@
         }
     },
     "disc_optimizer": {
-        "type": "Adam",
+        "type": "AdamW",
         "args": {
-            "lr": 2e-5,
+            "lr": 2e-4,
+            "weight_decay": 1e-6,
             "betas": [0.8, 0.99]
         }
     },
