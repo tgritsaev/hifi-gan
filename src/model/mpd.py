@@ -39,8 +39,6 @@ class MultiPeriodDiscriminator(nn.Module):
                 feature_maps.append(x)
 
         feature_maps.append(x)
-        print(x.shape)
         x = torch.flatten(x, 1, -1)
-        print(x.shape)
 
         return x, feature_maps

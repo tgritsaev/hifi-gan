@@ -29,7 +29,6 @@ class DiscriminatorBlock(nn.Module):
                 feature_maps.append(x)
 
         feature_maps.append(x)
-        x = torch.flatten(x, 1, -1)
         return x, feature_maps
 
 
@@ -51,4 +50,5 @@ class MultiScaleDiscriminator(nn.Module):
             feature_maps += disc_feature_maps
             if i + 1 < len(self.discriminator_blocks):
                 x = self.downsamples[i](x)
+        x = torch.flatten(x, 1, -1)
         return x, feature_maps
