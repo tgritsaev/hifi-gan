@@ -12,6 +12,7 @@ def collate_fn(batch: List[dict]):
     # for i in range(wavs.shape[0]):
     #     mels.append(wav2mel(wavs[i]))
     # mels = pad_2D_tensor(mels).squeeze(1)
-    mels = [mel for mel in wav2mel(wavs)]
+    batch_mels = wav2mel(wavs)
+    mels = [batch_mels[i] for i in range(batch_mels.shape[0])]
 
     return {"target": wavs, "mel": mels}
