@@ -1,4 +1,5 @@
 # https://arxiv.org/pdf/2010.05646.pdf, 2 HiFi-GAN, Appendix A
+import torch
 from torch import nn
 import torch.nn.functional as F
 
@@ -38,4 +39,6 @@ class MultiPeriodDiscriminator(nn.Module):
                 feature_maps.append(x)
 
         feature_maps.append(x)
+        x = torch.flatten(x, 1, -1)
+
         return x, feature_maps

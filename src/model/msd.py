@@ -1,4 +1,5 @@
 # https://arxiv.org/pdf/1910.06711.pdf, 2 The MelGAN Model
+import torch
 from torch import nn
 
 from src.model.utils import WNConv1d, SNConv1d
@@ -28,6 +29,7 @@ class DiscriminatorBlock(nn.Module):
                 feature_maps.append(x)
 
         feature_maps.append(x)
+        x = torch.flatten(x, 1, -1)
         return x, feature_maps
 
 
