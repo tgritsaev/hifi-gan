@@ -31,7 +31,7 @@
                 {
                     "type": "LJSpeechDataset",
                     "args": {
-                        "dir": "data/train",
+                        "dir": "data",
                         "max_len": 22528
                     }
                 }
