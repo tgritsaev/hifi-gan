@@ -1,3 +1,4 @@
+import torch
 from torch import nn
 import torch.nn.functional as F
 
@@ -24,13 +25,13 @@ class HiFiGANLoss(nn.Module):
     def disc(self, disc_pred, disc_target, **kwargs):
         disc_loss = 0
         for dt, dp in zip(disc_target, disc_pred):
-            disc_loss += ((dt - 1) ** 2).mean() + (dp**2).mean()
+            disc_loss += torch.mean((dt - 1) ** 2) + torch.mean(dp**2)
         return {"disc_loss": disc_loss}
 
     def gen(self, mel, pred, disc_pred, pred_feature_maps, target_feature_maps, **kwargs):
         loss_adv = 0
         for dp in disc_pred:
-            loss_adv += ((dp - 1) ** 2).mean()
+            loss_adv += torch.mean((dp - 1) ** 2)
 
         loss_mel = self.lambda_mel * F.l1_loss(self.wav2mel(pred), mel)
 

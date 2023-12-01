@@ -1,5 +1,4 @@
 # https://arxiv.org/pdf/2010.05646.pdf
-import torch
 from torch import nn
 
 from src.model.base_model import BaseModel

@@ -2,7 +2,7 @@
 from torch import nn
 
 from src.model.utils import WNConv1d, SNConv1d
-from src.utils import LRELU_SLOPE
+from src.model.utils import LRELU_SLOPE
 
 
 class DiscriminatorBlock(nn.Module):
@@ -24,7 +24,7 @@ class DiscriminatorBlock(nn.Module):
         feature_maps = []
         for layer in self.layers:
             x = layer(x)
-            if type(layer) == type(nn.LeakyReLU()):
+            if isinstance(layer, nn.LeakyReLU):
                 feature_maps.append(x)
 
         feature_maps.append(x)

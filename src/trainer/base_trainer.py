@@ -61,8 +61,8 @@ class BaseTrainer:
             self._resume_checkpoint(config.resume)
 
     @torch.no_grad()
-    def get_grad_norm(self, norm_type=2):
-        parameters = self.model.parameters()
+    def get_grad_norm(self, submodel, norm_type=2):
+        parameters = submodel.parameters()
         if isinstance(parameters, torch.Tensor):
             parameters = [parameters]
         parameters = [p for p in parameters if p.grad is not None]
@@ -79,9 +79,9 @@ class BaseTrainer:
         for metric_name in metric_tracker.keys():
             self.writer.add_scalar(f"{metric_name}", metric_tracker.avg(metric_name))
 
-    def _clip_grad_norm(self):
+    def _clip_grad_norm(self, submodel):
         if self.config["trainer"].get("grad_norm_clip", None) is not None:
-            torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.config["trainer"]["grad_norm_clip"])
+            torch.nn.utils.clip_grad_norm_(submodel.parameters(), self.config["trainer"]["grad_norm_clip"])
 
     def _progress(self, batch_idx):
         base = "[{}/{} ({:.0f}%)]"

@@ -48,7 +48,7 @@
     "gen_optimizer": {
         "type": "Adam",
         "args": {
-            "lr": 2e-3,
+            "lr": 2e-5,
             "betas": [0.8, 0.99]
         }
     },
@@ -61,7 +61,7 @@
     "disc_optimizer": {
         "type": "Adam",
         "args": {
-            "lr": 2e-3,
+            "lr": 2e-5,
             "betas": [0.8, 0.99]
         }
     },
@@ -80,6 +80,7 @@
         "verbosity": 2,
         "early_stop": 100,
         "visualize": "wandb",
-        "wandb_project": "dla4"
+        "wandb_project": "dla4",
+        "grad_norm_clip": 10
     }
 }

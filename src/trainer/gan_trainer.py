@@ -112,9 +112,11 @@ class GANTrainer(BaseTrainer):
             disc_loss = self.criterion.disc(**batch)
             batch.update(disc_loss)
             batch["disc_loss"].backward()
-            # self._clip_grad_norm(self.model.mpds)
-            # self._clip_grad_norm(self.model.msd)
+            self._clip_grad_norm(self.model.mpds)
+            self._clip_grad_norm(self.model.msd)
             self.disc_optimizer.step()
+            self.train_metrics.update("MPDs grad_norm", self.get_grad_norm(self.model.mpds))
+            self.train_metrics.update("MSD grad_norm", self.get_grad_norm(self.model.msd))
 
             # generator
             batch.update(self.model.disc_forward(**batch))
@@ -122,10 +124,9 @@ class GANTrainer(BaseTrainer):
             gen_loss = self.criterion.gen(**batch)
             batch.update(gen_loss)
             batch["gen_loss"].backward()
-            # self._clip_grad_norm(self.model.gen)
+            self._clip_grad_norm(self.model.gen)
             self.gen_optimizer.step()
-
-            self.train_metrics.update("grad_norm", self.get_grad_norm())
+            self.train_metrics.update("Gen grad_norm", self.get_grad_norm(self.model.gen))
 
             for loss_name in self.loss_names:
                 metrics.update(loss_name, batch[loss_name].item())

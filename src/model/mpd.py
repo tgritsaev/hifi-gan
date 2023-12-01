@@ -3,7 +3,7 @@ from torch import nn
 import torch.nn.functional as F
 
 from src.model.utils import WNConv2d
-from src.utils import LRELU_SLOPE
+from src.model.utils import LRELU_SLOPE
 
 
 class MultiPeriodDiscriminator(nn.Module):
@@ -34,7 +34,7 @@ class MultiPeriodDiscriminator(nn.Module):
 
         for layer in self.layers:
             x = layer(x)
-            if type(layer) == type(nn.LeakyReLU()):
+            if isinstance(layer, nn.LeakyReLU):
                 feature_maps.append(x)
 
         feature_maps.append(x)

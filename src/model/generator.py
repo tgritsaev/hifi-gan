@@ -3,7 +3,7 @@ from torch import nn
 
 from src.model.utils import WNConv1d
 from src.utils.mel_spectrogram import MelSpectrogramConfig
-from src.utils import LRELU_SLOPE
+from src.model.utils import LRELU_SLOPE
 
 
 class ResidualBlock(nn.Module):
