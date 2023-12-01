@@ -6,7 +6,7 @@ wav2mel = MelSpectrogram(MelSpectrogramConfig())
 
 
 def collate_fn(batch: List[dict]):
-    wavs = torch.stack([item["wav"] for item in batch])
+    wavs = torch.stack([item["wav"] for item in batch]).squeeze(1)
     # new_length = (wavs.shape[-1] // 256) * 256
     # wavs = wavs[..., :new_length]
 
