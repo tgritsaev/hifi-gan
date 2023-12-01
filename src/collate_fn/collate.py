@@ -1,5 +1,5 @@
 from typing import List
-
+import torch
 from src.utils.mel_spectrogram import MelSpectrogram, MelSpectrogramConfig
 
 wav2mel = MelSpectrogram(MelSpectrogramConfig())
@@ -14,8 +14,7 @@ def collate_fn(batch: List[dict]):
     # for i in range(wavs.shape[0]):
     #     mels.append(wav2mel(wavs[i]))
     # mels = pad_2D_tensor(mels).squeeze(1)
-    print(len(wavs), wavs[0].shape)
-    batch_mels = wav2mel(wavs)
+    batch_mels = wav2mel(torch.tensor(wavs))
     mels = [batch_mels[i] for i in range(batch_mels.shape[0])]
 
     return {"target": wavs, "mel": mels}
