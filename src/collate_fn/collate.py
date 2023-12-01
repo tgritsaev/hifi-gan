@@ -35,7 +35,7 @@ def pad_2D_tensor(inputs, maxlen=None):
 
 
 def collate_fn(batch: List[dict]):
-    wavs = torch.stack([item["wav"] for item in batch]).squeeze(1)
+    wavs = torch.stack([item["wav"] for item in batch])
     mels = wav2mel(wavs)
     print("!!!!!", wavs.shape, mels.shape)
 
