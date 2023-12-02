@@ -42,5 +42,4 @@ class HiFiGANModel(BaseModel):
         }
 
     def forward(self, mel, **kwargs):
-        print("!?!?", mel)
         return {"pred": self.gen(mel)}

@@ -43,7 +43,7 @@ def main(config, args):
             batch["mel"] = wav2vec(batch["wav"].to(device)).to(torch.float32)
             print(batch, type(batch["mel"]))
             print(batch["mel"].shape)
-            pred = model(batch)["pred"]
+            pred = model(**batch)["pred"]
             torchaudio.save(f"{args.output_dir}/{i}-audio.wav", pred, sample_rate=DEFAULT_SR)
 
     logger.info("Audios have been generated.")
