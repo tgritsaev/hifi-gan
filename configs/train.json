@@ -74,11 +74,11 @@
         }
     },
     "trainer": {
-        "epochs": 580,
+        "epochs": 1000,
         "len_epoch": 100,
         "log_step": 100,
         "save_dir": "saved/",
-        "save_period": 40,
+        "save_period": 20,
         "verbosity": 2,
         "visualize": "wandb",
         "wandb_project": "dla4",
