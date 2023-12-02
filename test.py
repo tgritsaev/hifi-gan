@@ -37,7 +37,7 @@ def main(config, args):
     os.makedirs(args.output_dir, exist_ok=True)
 
     with torch.no_grad():
-        for i, batch in enumerate(tqdm(dataset), "inference"):
+        for i, batch in enumerate(tqdm(dataset, "inference")):
             batch["wav"] = batch["wav"].to(device)
             pred = model(batch)["pred"]
             torchaudio.save(f"{args.output_dir}/{i}-audio.wav", pred, sample_rate=DEFAULT_SR)
