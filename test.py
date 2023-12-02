@@ -18,8 +18,6 @@ def main(config, args):
 
     # define cpu or gpu if possible
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    if device.type == "cpu":
-        logger.error("Error, supported cuda only!")
 
     # build model architecture
     model = config.init_obj(config["arch"], module_model)

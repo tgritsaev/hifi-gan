@@ -36,5 +36,8 @@
                 }
             ]
         }
+    },
+    "trainer": {
+        "save_dir": "saved/"
     }
 }
