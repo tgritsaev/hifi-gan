@@ -41,10 +41,8 @@ def main(config, args):
     with torch.no_grad():
         for i, batch in enumerate(tqdm(dataset, "inference")):
             batch["mel"] = wav2vec(batch["wav"].to(device)).to(torch.float32)
-            print(batch, type(batch["mel"]))
-            print(batch["mel"].shape)
             pred = model(**batch)["pred"]
-            torchaudio.save(f"{args.output_dir}/{i}-audio.wav", pred, sample_rate=DEFAULT_SR)
+            torchaudio.save(f"{args.output_dir}/{i}-audio.wav", pred.cpu(), sample_rate=DEFAULT_SR)
 
     logger.info("Audios have been generated.")
 
