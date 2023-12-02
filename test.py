@@ -40,7 +40,7 @@ def main(config, args):
 
     with torch.no_grad():
         for i, batch in enumerate(tqdm(dataset, "inference")):
-            batch["mel"] = wav2vec(batch["wav"].to(device))[:, :, :100]
+            batch["mel"] = wav2vec(batch["wav"].to(device)).squeeze(0)
             print(batch["mel"].shape)
             pred = model(batch)["pred"]
             torchaudio.save(f"{args.output_dir}/{i}-audio.wav", pred, sample_rate=DEFAULT_SR)
