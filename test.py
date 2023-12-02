@@ -7,10 +7,10 @@ import torch
 import torchaudio
 from tqdm import tqdm
 
+import src.datasets
 import src.model as module_model
 from src.utils import DEFAULT_SR
 from src.utils.parse_config import ConfigParser
-from src.utils.text import text_to_sequence
 
 
 def main(config, args):
@@ -34,46 +34,15 @@ def main(config, args):
     model = model.to(device)
     model.eval()
 
-    waveglow = get_waveglow(args.waveglow)
+    dataset = config.init_obj(config["data"]["test"]["datasets"][0], src.datasets, config_parser=config)
 
-    results_dir = "test_model/results/"
-    os.makedirs(results_dir, exist_ok=True)
+    os.makedirs(args.output_dir, exist_ok=True)
 
-    with open(args.input, "r") as f:
-        texts = [text.strip() for text in f.readlines()]
-    tokenized_texts = [text_to_sequence(t, ["english_cleaners"]) for t in texts]
-
-    def generate_save_audio(i, text, tokenized_text, length_control, pitch_control, energy_control):
-        src_seq = torch.tensor(tokenized_text, device=device).unsqueeze(0)
-        src_pos = torch.arange(1, len(tokenized_text) + 1, device=device).unsqueeze(0)
-
-        mel_prediction = model(
-            src_seq=src_seq,
-            src_pos=src_pos,
-            length_control=length_control,
-            pitch_control=pitch_control,
-            energy_control=energy_control,
-        )["mel_prediction"]
-        wav = get_wav(mel_prediction.transpose(1, 2), waveglow, sampling_rate=DEFAULT_SR).unsqueeze(0)
-
-        prefix_name = f"{i+1:04d}"
-        suffix_name = f"l{round(length_control, 2)}-p{round(pitch_control, 2)}-e{round(energy_control, 2)}"
-        with open(f"{results_dir}/{prefix_name}-text-{suffix_name}.txt", "w") as fout:
-            fout.write(text)
-        torchaudio.save(f"{results_dir}/{prefix_name}-audio-{suffix_name}.wav", wav, sample_rate=DEFAULT_SR)
-
-    if args.test:
-        for i, (text, tokenized_text) in tqdm(enumerate(zip(texts, tokenized_texts)), desc="inference"):
-            generate_save_audio(i, text, tokenized_text, 1, 1, 1)
-            for control in [0.8, 1.2]:
-                generate_save_audio(i, text, tokenized_text, control, 1, 1)
-                generate_save_audio(i, text, tokenized_text, 1, control, 1)
-                generate_save_audio(i, text, tokenized_text, 1, 1, control)
-                generate_save_audio(i, text, tokenized_text, control, control, control)
-
-    else:
-        for i, (text, tokenized_text) in tqdm(enumerate(zip(texts, tokenized_texts)), desc="inference"):
-            generate_save_audio(i, text, tokenized_text, args.length_control, args.pitch_control, args.energy_control)
+    with torch.no_grad():
+        for i, batch in enumerate(tqdm(dataset), "inference"):
+            batch["wav"] = batch["wav"].to(device)
+            pred = model(batch)["pred"]
+            torchaudio.save(f"{args.output_dir}/{i}-audio.wav", pred, sample_rate=DEFAULT_SR)
 
     logger.info("Audios have been generated.")
 
@@ -88,53 +57,18 @@ if __name__ == "__main__":
         help="Config path.",
     )
     args.add_argument(
-        "-t",
-        "--test",
-        default=False,
-        type=bool,
-        help="Create multiple audio variants with different length, pitch and energy.",
-    )
-    args.add_argument(
-        "-l",
-        "--length-control",
-        default=1,
-        type=float,
-        help="Increase or decrease audio speed.",
-    )
-    args.add_argument(
-        "-p",
-        "--pitch-control",
-        default=1,
-        type=float,
-        help="Increase or decrease audio pitch.",
-    )
-    args.add_argument(
-        "-e",
-        "--energy-control",
-        default=1,
-        type=float,
-        help="Increase or decrease audio energy.",
-    )
-    args.add_argument(
         "-cp",
         "--checkpoint",
-        default="test_model/tts-checkpoint.pth",
+        default="test_model/wav2mel-checkpoint.pth",
         type=str,
         help="Checkpoint path.",
     )
     args.add_argument(
-        "-i",
-        "--input",
-        default="test_model/input.txt",
+        "-o",
+        "--output",
+        default="test_model/results",
         type=str,
-        help="Input texts path.",
-    )
-    args.add_argument(
-        "-w",
-        "--waveglow",
-        default="waveglow/pretrained_model/waveglow_256channels.pt",
-        type=str,
-        help="Waveglow weights path.",
+        help="Output wavs path.",
     )
     args = args.parse_args()
 
