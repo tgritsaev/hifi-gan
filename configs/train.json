@@ -68,7 +68,7 @@
     "gen_lr_scheduler": {
         "type": "ExponentialLR",
         "args": {
-            "gamma": 0.994
+            "gamma": 0.99
         }
     },
     "disc_optimizer": {
@@ -82,11 +82,11 @@
     "disc_lr_scheduler": {
         "type": "ExponentialLR",
         "args": {
-            "gamma": 0.994
+            "gamma": 0.99
         }
     },
     "trainer": {
-        "epochs": 400,
+        "epochs": 580,
         "len_epoch": 100,
         "log_step": 100,
         "save_dir": "saved/",
