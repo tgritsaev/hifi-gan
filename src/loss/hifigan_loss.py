@@ -26,6 +26,7 @@ class HiFiGANLoss(nn.Module):
         disc_loss = 0
         for dt, dp in zip(disc_target, disc_pred):
             disc_loss = disc_loss + torch.mean((dt - 1) ** 2) + torch.mean(dp**2)
+            assert dt.shape == dp.shape, f"{dt.shape=} {dp.shape}"
         return {"disc_loss": disc_loss}
 
     def gen(self, mel, pred, disc_pred, pred_feature_maps, target_feature_maps, **kwargs):
@@ -38,5 +39,6 @@ class HiFiGANLoss(nn.Module):
         loss_fm = 0
         for tfm, pfm in zip(target_feature_maps, pred_feature_maps):
             loss_fm = loss_fm + self.lambda_fm * F.l1_loss(tfm, pfm)
+            assert tfm.shape == pfm.shape, f"{tfm.shape=} {pfm.shape}"
 
         return {"gen_loss": loss_adv + loss_fm + loss_mel, "loss_adv": loss_adv, "loss_fm": loss_fm, "loss_mel": loss_mel}
