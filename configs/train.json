@@ -36,18 +36,6 @@
                     }
                 }
             ]
-        },
-        "val": {
-            "batch_size": 1,
-            "num_workers": 1,
-            "datasets": [
-                {
-                    "type": "LJSpeechDataset",
-                    "args": {
-                        "dir": "test_model/test_data"
-                    }
-                }
-            ]
         }
     },
     "loss": {
