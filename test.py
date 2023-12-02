@@ -63,7 +63,7 @@ if __name__ == "__main__":
     )
     args.add_argument(
         "-o",
-        "--output",
+        "--output_dir",
         default="test_model/results",
         type=str,
         help="Output wavs path.",
