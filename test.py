@@ -10,6 +10,7 @@ from tqdm import tqdm
 import src.datasets
 import src.model as module_model
 from src.utils import DEFAULT_SR
+from src.utils.mel_spectrogram import MelSpectrogram, MelSpectrogramConfig
 from src.utils.parse_config import ConfigParser
 
 
@@ -32,13 +33,15 @@ def main(config, args):
     model = model.to(device)
     model.eval()
 
+    wav2vec = MelSpectrogram(MelSpectrogramConfig).to(device)
     dataset = config.init_obj(config["data"]["test"]["datasets"][0], src.datasets, config_parser=config)
 
     os.makedirs(args.output_dir, exist_ok=True)
 
     with torch.no_grad():
         for i, batch in enumerate(tqdm(dataset, "inference")):
-            batch["mel"] = batch["mel"].to(device).unsqueeze(0)
+            batch["mel"] = wav2vec(batch["wavs"].to(device))
+            print(batch["mel"].shape)
             pred = model(batch)["pred"]
             torchaudio.save(f"{args.output_dir}/{i}-audio.wav", pred, sample_rate=DEFAULT_SR)
 
