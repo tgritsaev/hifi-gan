@@ -56,7 +56,7 @@
     "gen_lr_scheduler": {
         "type": "ExponentialLR",
         "args": {
-            "gamma": 0.99
+            "gamma": 0.994
         }
     },
     "disc_optimizer": {
@@ -70,7 +70,7 @@
     "disc_lr_scheduler": {
         "type": "ExponentialLR",
         "args": {
-            "gamma": 0.99
+            "gamma": 0.994
         }
     },
     "trainer": {
