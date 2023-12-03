@@ -1,9 +1,31 @@
 # Mel-spectrogram to wav with HiFi-GAN 
 
 1. The model from the article [HiFi-GAN: Generative Adversarial Networks for Efficient and High Fidelity Speech Synthesis](https://arxiv.org/pdf/2010.05646.pdf) is implemented.
-2. To familiarize with Multi Scale Discriminator [MelGAN: Generative Adversarial Networks for Conditional Waveform Synthesis](https://arxiv.org/pdf/1910.06711.pdf).
+2. To familiarize with Multi Scale Discriminator and Feature Maps Loss read [MelGAN: Generative Adversarial Networks for Conditional Waveform Synthesis](https://arxiv.org/pdf/1910.06711.pdf).
 
-## Installation guide
+## Code organization
+
+```shell
+├── README.md             <- Top-level README.
+├── requirements.txt      <- project requirements.
+├── train.py              <- Top-level train code.
+├── test.py               <- Top-level test code.
+│
+├── scripts               <- setup scripts.
+│   ├── download_checkpoint.py   <- download my final model.
+│   └── download_data.sh         <- download data.
+│
+└── src                   <- main code directory.
+    ├── collate_fn               <- collate_fn function
+    ├── datasets                 <- LJSpeech dataset implementaion
+    ├── logger                   <- supportive logger
+    ├── loss                     <- HiFI-GAN loss implementation 
+    ├── model                    <- HiFI-GAN model implementation 
+    ├── trainer                  <- general train pipeline
+    └── utils                    <- utils
+
+
+## Installation
 
 1. Use python3.11
 ```shell
