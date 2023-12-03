@@ -23,7 +23,7 @@
     ├── model                    <- HiFI-GAN model implementation 
     ├── trainer                  <- general train pipeline
     └── utils                    <- utils
-
+```
 
 ## Installation
 
