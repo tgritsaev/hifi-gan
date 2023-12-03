@@ -17,10 +17,10 @@
 │
 └── src                   <- main code directory.
     ├── collate_fn               <- collate_fn function
-    ├── datasets                 <- LJSpeech dataset implementaion
+    ├── datasets                 <- LJSpeech dataset 
     ├── logger                   <- supportive logger
-    ├── loss                     <- HiFI-GAN loss implementation 
-    ├── model                    <- HiFI-GAN model implementation 
+    ├── loss                     <- HiFI-GAN loss  
+    ├── model                    <- HiFI-GAN model  
     ├── trainer                  <- general train pipeline
     └── utils                    <- utils
 ```
