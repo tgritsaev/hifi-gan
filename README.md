@@ -60,6 +60,7 @@ python3 test.py
 * Config path: `-c, --config, default="configs/test.json"`
 * Checkpoint path: `-cp, --checkpoint, default="test_model/wav2mel-checkpoint.pth"`
 * Output texts path: `-o, --output, test_model/results`
+See my best results in `test_data/results-v2`.
 
 ## Wandb
 
